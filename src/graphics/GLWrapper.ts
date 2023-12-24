@@ -75,6 +75,22 @@ function createBuffer(gl: WebGL2RenderingContext, type: number, typedDataArray: 
   return buffer
 }
 
+/**
+ * A class for rendering 3D graphics objects to the canvas with id=canvas.
+ * 
+ * @remarks
+ * 
+ * It renders to the canvas with id=canvas on the page.
+ * The canvas automatically resizes to maintain a 4:3 aspect ratio based on the screen size.
+ * 
+ * It follows the following specifications:
+ * - Camera horizontal range: [-640, 640], positive towards the right
+ * - Camera vertical range: [-480, 480], positive upwards
+ * - Camera depth range: [-50, 50], positive towards the front
+ * - Culling: Disabled
+ * - Depth testing: Enabled
+ * - Clear color: Black
+ */
 export class GLWrapper {
   public static readonly VIEWPORT_WIDTH: number = 1280
   public static readonly VIEWPORT_HEIGHT: number = 960
@@ -86,6 +102,10 @@ export class GLWrapper {
   private readonly uniTrsLoc: WebGLUniformLocation
   private readonly uniColLoc: WebGLUniformLocation
 
+  /**
+   * Constructor.
+   * @throws if the operation fails.
+   */
   public constructor() {
     // get canvas
     const canvasOpt = document.getElementById("canvas")
@@ -202,18 +222,38 @@ export class GLWrapper {
     )
   }
 
+  /**
+   * Clears the screen.
+   * 
+   * It should be called before rendering in every frame.
+   */
   public clear() {
     this.gl.clear(WebGL2RenderingContext.COLOR_BUFFER_BIT | WebGL2RenderingContext.DEPTH_BUFFER_BIT)
   }
 
+  /**
+   * Updates the actual screen with the current rendering state.
+   * 
+   * It should be called at the end of every frame after rendering.
+   */
   public flush() {
     this.gl.flush()
   }
 
+  /**
+   * Sets the color of model.
+   * @param vecCol 
+   */
   public setColor(vecCol: Vector) {
     this.gl.uniform4fv(this.uniColLoc, vecCol.get())
   }
 
+  /**
+   * Draws a square.
+   * @param matScl Scaler matrix.
+   * @param matRot Rotator matrix,
+   * @param matTrs Translator matrix.
+   */
   public draw(matScl: Matrix, matRot: Matrix, matTrs: Matrix) {
     this.gl.uniformMatrix4fv(this.uniSclLoc, false, matScl.get())
     this.gl.uniformMatrix4fv(this.uniRotLoc, false, matRot.get())
