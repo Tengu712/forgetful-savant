@@ -10,10 +10,7 @@ export class Matrix {
 
   /**
    * Constructor.
-   * 
-   * If `raw` is `undefined`, it defaults to the zero matrix.
-   * 
-   * @param raw Internal data. Note that it is transposed.
+   * @param raw Internal data. Note that it is transposed. If `undefined`, it defaults to the zero matrix.
    * @throws if the length of `raw` is fewer than 16.
    */
   public constructor(raw?: number[]) {

@@ -1,5 +1,5 @@
-import { Matrix } from "@/util/Matrix"
-import { Vector } from "@/util/Vector"
+import { Matrix } from "@/graphics/gl/Matrix"
+import { Vector } from "@/graphics/gl/Vector"
 
 const VERTEX_SHADER_IN_POS_LOCATION: number = 0
 
@@ -225,6 +225,7 @@ export class GLWrapper {
   /**
    * Clears the screen.
    * 
+   * @remarks
    * It should be called before rendering in every frame.
    */
   public clear() {
@@ -234,6 +235,7 @@ export class GLWrapper {
   /**
    * Updates the actual screen with the current rendering state.
    * 
+   * @remarks
    * It should be called at the end of every frame after rendering.
    */
   public flush() {
@@ -241,23 +243,17 @@ export class GLWrapper {
   }
 
   /**
-   * Sets the color of model.
-   * @param vecCol 
-   */
-  public setColor(vecCol: Vector) {
-    this.gl.uniform4fv(this.uniColLoc, vecCol.get())
-  }
-
-  /**
    * Draws a square.
    * @param matScl Scaler matrix.
    * @param matRot Rotator matrix,
    * @param matTrs Translator matrix.
+   * @param vecCol Color vector.
    */
-  public draw(matScl: Matrix, matRot: Matrix, matTrs: Matrix) {
+  public draw(matScl: Matrix, matRot: Matrix, matTrs: Matrix, vecCol: Vector) {
     this.gl.uniformMatrix4fv(this.uniSclLoc, false, matScl.get())
     this.gl.uniformMatrix4fv(this.uniRotLoc, false, matRot.get())
     this.gl.uniformMatrix4fv(this.uniTrsLoc, false, matTrs.get())
+    this.gl.uniform4fv(this.uniColLoc, vecCol.get())
     this.gl.drawElements(
       WebGL2RenderingContext.TRIANGLES,
       6,

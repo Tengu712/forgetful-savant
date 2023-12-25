@@ -1,16 +1,16 @@
-import { GLWrapper } from "@/graphics/GLWrapper"
-import { Matrix } from "@/util/Matrix"
-import { Vector } from "./util/Vector"
+import { GLWrapper } from "@/graphics/gl/GLWrapper"
+import { Sprite } from "./component/graphics/Sprite"
+import { ComponentManager } from "./component/ComponentManager"
 
 function main() {
   const gl = new GLWrapper()
+  const comManager = new ComponentManager()
+  comManager.add(new Sprite([0, 0, 40], undefined, [100, 100], [1, 0, 0, 1]))
+  comManager.add(new Sprite([0, 0, -20], undefined, [200, 50], [0, 1, 0, 1]))
 
   const loop = (timeStamp: DOMHighResTimeStamp) => {
     gl.clear()
-    gl.setColor(new Vector([1, 0, 0, 1]))
-    gl.draw(Matrix.scaler(100, 100, 1), Matrix.identity(), Matrix.translator(0, 0, 40))
-    gl.setColor(new Vector([0, 1, 0, 1]))
-    gl.draw(Matrix.scaler(50, 200, 1), Matrix.identity(), Matrix.translator(0, 0, -20))
+    comManager.get(Sprite).forEach((n) => n.draw(gl))
     gl.flush()
     requestAnimationFrame(loop)
   }

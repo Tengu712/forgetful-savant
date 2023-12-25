@@ -6,10 +6,7 @@ export class Vector {
 
   /**
    * Constructor.
-   * 
-   * If `raw` is `undefined`, it defaults to the zero vector.
-   * 
-   * @param raw Internal data.
+   * @param raw Internal data. If `undefined`, it defaults to the zero vector.
    * @throws if the length of `raw` is fewer than 4.
    */
   constructor(raw?: number[]) {
